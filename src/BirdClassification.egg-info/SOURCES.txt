@@ -1,0 +1,7 @@
+README.md
+setup.py
+src/BirdClassification.egg-info/PKG-INFO
+src/BirdClassification.egg-info/SOURCES.txt
+src/BirdClassification.egg-info/dependency_links.txt
+src/BirdClassification.egg-info/requires.txt
+src/BirdClassification.egg-info/top_level.txt

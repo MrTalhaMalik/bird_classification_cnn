@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: BirdClassification
+Version: 0.11
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: mlflow
+Requires-Dist: scikit-learn
