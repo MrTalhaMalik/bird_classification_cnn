@@ -3,7 +3,7 @@ import torch
 from src.data_loader import prepare_dataframes, load_data
 from src.model import build_model
 from src.train import train
-# from evaluate import evaluate
+#from src.evaluate import evaluate
 
 
 def main():

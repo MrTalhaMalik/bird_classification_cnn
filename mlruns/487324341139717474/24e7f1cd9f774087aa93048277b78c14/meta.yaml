@@ -1,0 +1,15 @@
+artifact_uri: file:///home/student/bird_classification_cnn-2/mlruns/487324341139717474/24e7f1cd9f774087aa93048277b78c14/artifacts
+end_time: 1712539406732
+entry_point_name: ''
+experiment_id: '487324341139717474'
+lifecycle_stage: active
+run_id: 24e7f1cd9f774087aa93048277b78c14
+run_name: upset-midge-240
+run_uuid: 24e7f1cd9f774087aa93048277b78c14
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712534646912
+status: 4
+tags: []
+user_id: student
