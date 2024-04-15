@@ -1,0 +1,15 @@
+artifact_uri: file:///home/student/bird_classification_cnn-2/mlruns/487324341139717474/e8c72484cacf47debcc7571c0b19984b/artifacts
+end_time: 1713196793342
+entry_point_name: ''
+experiment_id: '487324341139717474'
+lifecycle_stage: active
+run_id: e8c72484cacf47debcc7571c0b19984b
+run_name: beautiful-crab-879
+run_uuid: e8c72484cacf47debcc7571c0b19984b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1713196329092
+status: 3
+tags: []
+user_id: student

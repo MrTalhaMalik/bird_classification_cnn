@@ -3,7 +3,7 @@ import torch
 from src.data_loader import prepare_dataframes, load_data
 from src.model import build_model
 from src.train import train
-#from src.evaluate import evaluate
+from src.evaluate import evaluate
 
 
 def main():
@@ -12,9 +12,9 @@ def main():
     """
     # Set paths
     train_dir = os.path.join('/data', 'train')
-    test_dir = os.path.join('/data', 'test')
+    test_dir = os.path.join('data', 'test')
     print(test_dir)
-    # model_path = 'models/bird_classification_model.h5'
+    model_path = 'models/bird_classification_model.h5'
 
     # Prepare dataframes for the training and validation datasets
     train_df, test_df = prepare_dataframes(train_dir)
@@ -29,11 +29,15 @@ def main():
     train(model, train_data, test_data, device=device)
 
     # # Save the trained model
-    # model.save(model_path)
-    # print(f"Model saved at {model_path}")
+    #model.save(model_path)
+    #print(f"Model saved at {model_path}")
+
+    torch.save(model.state_dict(), model_path)
+    print(f"Model state dictionary saved at {model_path}")
 
     # # Evaluate the model on the test set
-    # evaluate(model_path, test_dir)
+    evaluate(model_path, test_dir)
 
 if __name__ == '__main__':
     main()
+

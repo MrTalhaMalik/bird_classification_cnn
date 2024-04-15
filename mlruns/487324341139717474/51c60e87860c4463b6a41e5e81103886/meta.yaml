@@ -1,0 +1,15 @@
+artifact_uri: file:///home/student/bird_classification_cnn-2/mlruns/487324341139717474/51c60e87860c4463b6a41e5e81103886/artifacts
+end_time: 1712610589129
+entry_point_name: ''
+experiment_id: '487324341139717474'
+lifecycle_stage: active
+run_id: 51c60e87860c4463b6a41e5e81103886
+run_name: silent-mare-246
+run_uuid: 51c60e87860c4463b6a41e5e81103886
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712605255979
+status: 3
+tags: []
+user_id: student
