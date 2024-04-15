@@ -1,65 +1,72 @@
+from flask import Flask, request, render_template, redirect, url_for, flash
 import os
-from flask import Flask, render_template, request, redirect, url_for
-from werkzeug.utils import secure_filename
 import torch
 from PIL import Image
 from torchvision import transforms
-from src.model import build_model
+from werkzeug.utils import secure_filename
+from src.model import build_model  # Make sure this import matches your project structure
 
 app = Flask(__name__)
 
-# Define the upload folder and allowed extensions
+# Configuration
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = 'supersecretkey'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Load the model
-model_path = 'models/bird_classification_model.pth'
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = build_model(num_classes=525)
-model.load_state_dict(torch.load(model_path, map_location=device))
-model.to(device)
-model.eval()
-
-# Define the allowed file types function
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Define the prediction function
-def predict(image_path):
+def get_class_names(data_directory):
+    class_names = sorted(os.listdir(data_directory))
+    return class_names
+
+class_names = get_class_names('data/train')
+
+def load_model(model_path, num_classes):
+    model = build_model(num_classes=num_classes)
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    model.eval()
+    return model
+
+model = load_model('models/bird_classification_model.pth', len(class_names))
+
+def preprocess_image(image_path):
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
-    image = Image.open(image_path)
-    image = transform(image).unsqueeze(0)
-    image = image.to(device)
-    output = model(image)
-    _, predicted = torch.max(output, 1)
-    return predicted.item()
+    image = Image.open(image_path).convert('RGB')
+    return transform(image).unsqueeze(0)
 
-@app.route('/')
-def index():
+def model_predict(image_path, model, class_names):
+    preprocessed_image = preprocess_image(image_path)
+    with torch.no_grad():
+        outputs = model(preprocessed_image)
+    predicted_index = outputs.argmax().item()
+    return class_names[predicted_index]
+
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            predicted_class_name = model_predict(file_path, model, class_names)
+            return render_template('result.html', prediction=predicted_class_name, image_url=url_for('static', filename=os.path.join('uploads', filename)))
+        else:
+            flash('Allowed file types are png, jpg, jpeg')
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return redirect(request.url)
-    file = request.files['file']
-    if file.filename == '':
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        prediction = predict(file_path)
-        return render_template('result.html', filename=filename, prediction=prediction)
-    else:
-        return redirect(request.url)
-
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    app.run(debug=True,port=5000, host='0.0.0.0')

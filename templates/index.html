@@ -3,85 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boy Classification</title>
+    <title>Upload Image</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0f2f1;
+            background-color: #3f51b5;
+            color: #ffffff;
             margin: 0;
             padding: 0;
         }
         .container {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 100px;
         }
         h1 {
-            color: #1976d2;
             font-size: 36px;
+            margin-bottom: 30px;
         }
-        p {
-            color: #37474f;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-        .upload-form {
-            margin-top: 30px;
-        }
-        .upload-btn {
-            padding: 10px 20px;
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .upload-btn:hover {
-            background-color: #1565c0;
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         input[type="file"] {
-            display: none;
-        }
-        .upload-label {
-            padding: 10px 20px;
-            background-color: #f44336;
-            color: white;
             border: none;
+            padding: 10px 20px;
+            font-size: 18px;
             border-radius: 5px;
+            background-color: #9c27b0;
+            color: #ffffff;
             cursor: pointer;
-            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        .upload-label:hover {
-            background-color: #d32f2f;
+        input[type="file"]:hover {
+            background-color: #7b1fa2;
         }
-        .uploaded-image {
-            margin-top: 30px;
-            max-width: 300px;
+        button[type="submit"] {
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            background-color: #ff5722;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #e64a19;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Boy Classification</h1>
-        <p>Upload an image of a boy to classify</p>
-        <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-            <label class="upload-label" for="file">Choose File</label>
-            <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png" required onchange="previewImage(event)">
-            <input class="upload-btn" type="submit" value="Upload">
+        <h1>Upload an Image for Manly Classification</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload and Predict</button>
         </form>
-        <img class="uploaded-image" id="preview" src="#" alt="Uploaded Image" style="display:none">
     </div>
-
-    <script>
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                var preview = document.getElementById('preview');
-                preview.src = reader.result;
-                preview.style.display = 'block';
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
 </body>
 </html>
