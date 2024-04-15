@@ -1,25 +1,87 @@
-<!-- templates/index.html -->
-
 <!DOCTYPE html>
-<html>
-<link rel="stylesheet" href="/static/styles.css">
-
+<html lang="en">
 <head>
-    <title>Upload Image</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boy Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f2f1;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #1976d2;
+            font-size: 36px;
+        }
+        p {
+            color: #37474f;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .upload-form {
+            margin-top: 30px;
+        }
+        .upload-btn {
+            padding: 10px 20px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .upload-btn:hover {
+            background-color: #1565c0;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-label {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .upload-label:hover {
+            background-color: #d32f2f;
+        }
+        .uploaded-image {
+            margin-top: 30px;
+            max-width: 300px;
+        }
+    </style>
 </head>
-
 <body>
-    <main>
-        <div class="container">
-            <h1>Upload Bird Image for Classification</h1>
-            <form action="/" method="post" enctype="multipart/form-data">
-               <center><input type="file" name="file" id="file">
-                <input type="submit" value="Upload"></center> 
-            </form>
-        </div>
-    </main>
+    <div class="container">
+        <h1>Boy Classification</h1>
+        <p>Upload an image of a boy to classify</p>
+        <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <label class="upload-label" for="file">Choose File</label>
+            <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png" required onchange="previewImage(event)">
+            <input class="upload-btn" type="submit" value="Upload">
+        </form>
+        <img class="uploaded-image" id="preview" src="#" alt="Uploaded Image" style="display:none">
+    </div>
 
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var preview = document.getElementById('preview');
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
-
 </html>
